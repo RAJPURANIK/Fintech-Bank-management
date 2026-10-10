@@ -4,12 +4,14 @@ import DashboardView from './components/DashboardView';
 import CustomersView from './components/CustomersView';
 import AccountsView from './components/AccountsView';
 import TransactionsView from './components/TransactionsView';
+import DatabaseModal from './components/DatabaseModal';
 import { BankApi } from './services/api';
 import { CheckCircle2, AlertCircle, X } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [backendStatus, setBackendStatus] = useState('CHECKING');
+  const [isDbModalOpen, setIsDbModalOpen] = useState(false);
   
   // App data state
   const [summary, setSummary] = useState(null);
@@ -73,6 +75,13 @@ export default function App() {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         backendStatus={backendStatus}
+        onOpenDbModal={() => setIsDbModalOpen(true)}
+      />
+
+      {/* Database Schema Modal */}
+      <DatabaseModal
+        isOpen={isDbModalOpen}
+        onClose={() => setIsDbModalOpen(false)}
       />
 
       {/* Toast notifications */}
@@ -98,6 +107,7 @@ export default function App() {
             loading={loading}
             onRefresh={loadData}
             setActiveTab={setActiveTab}
+            onOpenDbModal={() => setIsDbModalOpen(true)}
           />
         )}
 
@@ -138,8 +148,15 @@ export default function App() {
           <div>
             Fintech Bank Management Platform • DevOps Mini Project
           </div>
-          <div>
-            Built with Spring Boot 3, React, MySQL, Docker, Prometheus & Grafana
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setIsDbModalOpen(true)}
+              className="text-teal-700 hover:underline font-semibold"
+            >
+              Show Schema (bankdb)
+            </button>
+            <span>•</span>
+            <span>Built with Spring Boot 3, React, MySQL, Docker, Prometheus & Grafana</span>
           </div>
         </div>
       </footer>
